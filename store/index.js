@@ -36,19 +36,34 @@ export const actions = {
       console.log('error : ' + errorCode)
     });
   },
- fetchTodos({ commit }) {
-   todoRef
-   .get()
-   .then(res => {
-     res.forEach((doc) => {
-       console.log('success : ' + `${doc.id} => ${doc.data()}`);
-       commit('addTodo', doc.data())
-     })
-   })
-   .catch(error => {
-     console.log('error : ' + error)
-   })
- }
+  fetchTodos({ commit }) {
+    todoRef
+    .get()
+    .then(res => {
+      res.forEach((doc) => {
+        console.log('success : ' + `${doc.id} => ${doc.data()}`);
+        commit('addTodo', doc.data())
+      })
+    })
+    .catch(error => {
+      console.log('error : ' + error)
+    })
+  },
+  addTodo({commit}, todo) {
+    console.log(todo)
+    todoRef
+    .add({
+      todo: todo.todo,
+      limit: todo.limit,
+    })
+    .then(function(docRef) {
+      console.log("Document written with ID: ", docRef.id);
+      commit('addTodo', todo)
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+  }  
 }
 
 export const getters = {
